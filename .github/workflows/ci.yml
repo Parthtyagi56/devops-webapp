@@ -42,3 +42,13 @@ jobs:
           echo "Commit: ${{ github.sha }}"
           echo "Build Status: SUCCESS"
           echo "================================="
+
+      - name: Send success notification to Slack
+        if: success()
+        run: |
+          curl -X POST \
+            -H 'Content-type: application/json' \
+            --data '{
+              "text": "🚀 CI/CD Pipeline SUCCESS\n\nRepository: ${{ github.repository }}\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nStatus: SUCCESS\nDeployment: AWS Amplify"
+            }' \
+            "${{ secrets.SLACK_WEBHOOK_URL }}"
