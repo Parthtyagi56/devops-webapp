@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DevOps Control Center</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b1020;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            border-bottom: 1px solid #202943;
+            background: rgba(11, 16, 32, 0.95);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #00e5ff;
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #9da8c7;
+        }
+
+        .online-dot {
+            width: 9px;
+            height: 9px;
+            background: #00e676;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00e676;
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 75px 7% 45px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border: 1px solid #263653;
+            border-radius: 30px;
+            color: #00e5ff;
+            background: #10182d;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 72px);
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #00e5ff;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: auto;
+            color: #9da8c7;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        /* MAIN */
+
+        .dashboard {
+            width: 86%;
+            max-width: 1200px;
+            margin: 30px auto 80px;
+        }
+
+        /* STATUS CARD */
+
+        .status-card {
+            background: linear-gradient(135deg, #121b33, #0e1528);
+            border: 1px solid #263653;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .status-title {
+            color: #8d99b8;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .status-main {
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #00e676;
+        }
+
+        .status-description {
+            color: #8d99b8;
+            margin-top: 8px;
+        }
+
+        .deploy-button {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 10px;
+            background: #00e5ff;
+            color: #06101c;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .deploy-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* PIPELINE */
+
+        .section-title {
+            font-size: 24px;
+            margin: 35px 0 18px;
+        }
+
+        .pipeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .stage {
+            background: #121a2e;
+            border: 1px solid #263653;
+            padding: 25px;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage::after {
+            content: "";
+            position: absolute;
+            height: 3px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #00e676;
+        }
+
+        .stage-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .stage h3 {
+            margin-bottom: 8px;
+        }
+
+        .stage p {
+            color: #8d99b8;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .stage-status {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #00e676;
+            font-weight: bold;
+        }
+
+        /* INFORMATION GRID */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .panel {
+            background: #121a2e;
+            border: 1px solid #263653;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .panel h3 {
+            margin-bottom: 20px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 13px 0;
+            border-bottom: 1px solid #202943;
+            color: #9da8c7;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row strong {
+            color: #ffffff;
+        }
+
+        /* TECH STACK */
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .tech {
+            text-align: center;
+            background: #121a2e;
+            border: 1px solid #263653;
+            padding: 25px 15px;
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .tech:hover {
+            transform: translateY(-5px);
+            border-color: #00e5ff;
+        }
+
+        .tech-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .tech p {
+            color: #9da8c7;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid #202943;
+            color: #697590;
+            font-size: 14px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+
+            .pipeline {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            .hero {
+                padding: 55px 5% 30px;
+            }
+
+            .dashboard {
+                width: 90%;
+            }
+
+            .pipeline {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .status-card {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <div class="logo">
+            DevOps<span>Control</span>
+        </div>
+
+        <div class="nav-status">
+            <div class="online-dot"></div>
+            All Systems Operational
+        </div>
+
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="badge">
+            ⚡ AUTOMATED DELIVERY PLATFORM
+        </div>
+
+        <h1>
+            Build. Test.<br>
+            <span>Deploy.</span> Repeat.
+        </h1>
+
+        <p>
+            An end-to-end DevOps pipeline powered by Git,
+            GitHub Actions, ChatOps and cloud deployment.
+        </p>
+
+    </section>
+
+
+    <!-- DASHBOARD -->
+
+    <main class="dashboard">
+
+        <!-- PIPELINE STATUS -->
+
+        <div class="status-card">
+
+            <div>
+
+                <div class="status-title">
+                    Current Pipeline Status
+                </div>
+
+                <div class="status-main success">
+                    ● Pipeline Operational
+                </div>
+
+                <div class="status-description">
+                    Latest build completed successfully
+                </div>
+
+            </div>
+
+            <button class="deploy-button"
+                    onclick="showDeployment()">
+                View Deployment
+            </button>
+
+        </div>
+
+
+        <!-- PIPELINE -->
+
+        <h2 class="section-title">
+            CI/CD Pipeline
+        </h2>
+
+        <div class="pipeline">
+
+            <div class="stage">
+
+                <div class="stage-icon">📦</div>
+
+                <h3>Source</h3>
+
+                <p>
+                    Code committed and pushed
+                    to the Git repository.
+                </p>
+
+                <div class="stage-status">
+                    ✓ COMPLETED
+                </div>
+
+            </div>
+
+
+            <div class="stage">
+
+                <div class="stage-icon">⚙️</div>
+
+                <h3>Build</h3>
+
+                <p>
+                    GitHub Actions validates
+                    and builds the application.
+                </p>
+
+                <div class="stage-status">
+                    ✓ PASSED
+                </div>
+
+            </div>
+
+
+            <div class="stage">
+
+                <div class="stage-icon">💬</div>
+
+                <h3>ChatOps</h3>
+
+                <p>
+                    Build status is automatically
+                    reported to the team.
+                </p>
+
+                <div class="stage-status">
+                    ✓ NOTIFIED
+                </div>
+
+            </div>
+
+
+            <div class="stage">
+
+                <div class="stage-icon">🚀</div>
+
+                <h3>Deploy</h3>
+
+                <p>
+                    The latest version is
+                    deployed to the cloud.
+                </p>
+
+                <div class="stage-status">
+                    ✓ LIVE
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- INFORMATION -->
+
+        <div class="info-grid">
+
+            <div class="panel">
+
+                <h3>📊 Deployment Information</h3>
+
+                <div class="info-row">
+                    <span>Environment</span>
+                    <strong>Production</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Branch</span>
+                    <strong>main</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Build Status</span>
+                    <strong class="success">SUCCESS</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Deployment</span>
+                    <strong class="success">LIVE</strong>
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <h3>🔐 Repository Information</h3>
+
+                <div class="info-row">
+                    <span>Repository</span>
+                    <strong>devops-webapp</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Pipeline</span>
+                    <strong>GitHub Actions</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Deployment</span>
+                    <strong>Netlify</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Automation</span>
+                    <strong class="success">ENABLED</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TECHNOLOGY STACK -->
+
+        <h2 class="section-title">
+            Technology Stack
+        </h2>
+
+        <div class="tech-grid">
+
+            <div class="tech">
+
+                <div class="tech-icon">🐙</div>
+
+                <strong>Git</strong>
+
+                <p>Version Control</p>
+
+            </div>
+
+
+            <div class="tech">
+
+                <div class="tech-icon">⚡</div>
+
+                <strong>GitHub Actions</strong>
+
+                <p>CI Automation</p>
+
+            </div>
+
+
+            <div class="tech">
+
+                <div class="tech-icon">💬</div>
+
+                <strong>Slack</strong>
+
+                <p>ChatOps</p>
+
+            </div>
+
+
+            <div class="tech">
+
+                <div class="tech-icon">🌐</div>
+
+                <strong>Netlify</strong>
+
+                <p>Cloud Deployment</p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        DevOps Control Center • CI/CD Automation Lab • 2026
+
+    </footer>
+
+
+    <script>
+
+        function showDeployment() {
+
+            alert(
+                "🚀 Deployment Successful!\\n\\n" +
+                "Environment: Production\\n" +
+                "Status: LIVE\\n" +
+                "Pipeline: PASSED"
+            );
+
+        }
+
+    </script>
+
+</body>
+</html>
